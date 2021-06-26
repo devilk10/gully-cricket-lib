@@ -1,8 +1,13 @@
 package org.gali.cricket.domain
 
-data class ScoreCard(val score: Score)
+data class ScoreCardSummary(
+    val teamScore: TeamScore,
+    val strikerScore: PlayerScore,
+    val nonStrikerScore: PlayerScore,
+    val bowlerScore: BowlerScore
+)
 
-data class Score(val run: Int, val wickets: Int, val overNumber: Int, val ballNumber: Int)
+data class TeamScore(val run: Int, val wickets: Int, val overNumber: Int, val ballNumber: Int)
 
 data class Over(val number: Int, val balls: List<Ball>) {
     fun isCompleted(): Boolean = balls.filter { it.isLegal() }.count() == 6

@@ -8,7 +8,7 @@ class InningTest {
 
     @Test
     fun `should return register first ball over`() {
-        val inning = Inning(2)
+        val inning = Inning(2, listOf(0, 1))
         val ball = NoWicketBall(2)
 
         val actualOver = inning.registerBall(ball)
@@ -20,7 +20,7 @@ class InningTest {
 
     @Test
     fun `should return register second ball of over`() {
-        val inning = Inning(2)
+        val inning = Inning(2, listOf(0, 1))
         val ball1 = NoWicketBall(2)
         val ball2 = WideBall(1)
 
@@ -34,7 +34,7 @@ class InningTest {
 
     @Test
     fun `create a new over when current over is completed`() {
-        val inning = Inning(2)
+        val inning = Inning(2, listOf(0, 1))
         val noWicketBall = NoWicketBall(1)
 
         repeat(6) {
@@ -49,7 +49,7 @@ class InningTest {
 
     @Test
     fun `a inning is completed when last over is completed`() {
-        val inning = Inning(2)
+        val inning = Inning(2, listOf(0, 1))
         val noWicketBall = NoWicketBall(1)
 
         repeat(12) {
@@ -61,15 +61,18 @@ class InningTest {
 
     @Test
     fun `gives score for zero balls`() {
-        val inning = Inning(2)
+        val inning = Inning(2, listOf(0, 1))
         val actualScoreCard = inning.scoreCard()
-        val expectedScoreCard = ScoreCard(
-            score = Score(
+        val expectedScoreCard = ScoreCardSummary(
+            teamScore = TeamScore(
                 run = 0,
                 wickets = 0,
                 overNumber = 0,
                 ballNumber = 0,
-            )
+            ),
+            strikerScore = BatsmanScore(0, 0),
+            nonStrikerScore = BatsmanScore(1, 0),
+            bowlerScore = BowlerScore(id = 0, runs = 0, legalBalls = 0, wickets = 0),
         )
 
         assertEquals(expectedScoreCard, actualScoreCard)
@@ -77,17 +80,20 @@ class InningTest {
 
     @Test
     fun `gives score for 1 ball`() {
-        val inning = Inning(2)
+        val inning = Inning(2, listOf(0, 1))
         val ball = NoWicketBall(4)
         inning.registerBall(ball)
         val actualScoreCard = inning.scoreCard()
-        val expectedScoreCard = ScoreCard(
-            score = Score(
+        val expectedScoreCard = ScoreCardSummary(
+            teamScore = TeamScore(
                 run = 4,
                 wickets = 0,
                 overNumber = 0,
                 ballNumber = 1,
-            )
+            ),
+            strikerScore = BatsmanScore(0, 4),
+            nonStrikerScore = BatsmanScore(1, 0),
+            bowlerScore = BowlerScore(id = 0, runs = 0, legalBalls = 0, wickets = 0),
         )
 
         assertEquals(expectedScoreCard, actualScoreCard)
@@ -95,7 +101,7 @@ class InningTest {
 
     @Test
     fun `gives score for 1 over and 1 ball`() {
-        val inning = Inning(2)
+        val inning = Inning(2, listOf(0, 1))
         val ball = NoWicketBall(4)
         val wideBall = WideBall()
 
@@ -104,13 +110,16 @@ class InningTest {
             inning.registerBall(wideBall)
         }
         val actualScoreCard = inning.scoreCard()
-        val expectedScoreCard = ScoreCard(
-            score = Score(
+        val expectedScoreCard = ScoreCardSummary(
+            teamScore = TeamScore(
                 run = 35,
                 wickets = 0,
                 overNumber = 1,
                 ballNumber = 1,
-            )
+            ),
+            strikerScore = BatsmanScore(0, 28),
+            nonStrikerScore = BatsmanScore(1, 0),
+            bowlerScore = BowlerScore(id = 0, runs = 0, legalBalls = 0, wickets = 0),
         )
 
         assertEquals(expectedScoreCard, actualScoreCard)
@@ -118,18 +127,67 @@ class InningTest {
 
     @Test
     fun `updates score when wicket is fallen`() {
-        val inning = Inning(2)
-        val ball = WicketBall(wicket = Bowled(playerId = 0, byPlayerId = 1), runs = 0)
+        val inning = Inning(2, listOf(0, 1))
+        val ball = WicketBall(wicket = Bowled(playerId = 0, byPlayerId = 1), run = 0)
         inning.registerBall(ball)
 
         val actualScoreCard = inning.scoreCard()
-        val expectedScoreCard = ScoreCard(
-            score = Score(
+        val expectedScoreCard = ScoreCardSummary(
+            teamScore = TeamScore(
                 run = 0,
                 wickets = 1,
                 overNumber = 0,
                 ballNumber = 1,
-            )
+            ),
+            strikerScore = BatsmanScore(0, 0),
+            nonStrikerScore = BatsmanScore(1, 0),
+            bowlerScore = BowlerScore(id = 0, runs = 0, legalBalls = 0, wickets = 0),
+        )
+
+        assertEquals(expectedScoreCard, actualScoreCard)
+    }
+
+    @Test
+    fun `updates batsman score card`() {
+        val inning = Inning(2, listOf(0, 1, 2))
+        val ball = NoWicketBall(4)
+        inning.registerBall(ball)
+
+        val actualScoreCard = inning.scoreCard()
+        val expectedScoreCard = ScoreCardSummary(
+            teamScore = TeamScore(
+                run = 4,
+                wickets = 0,
+                overNumber = 0,
+                ballNumber = 1,
+            ),
+            strikerScore = BatsmanScore(0, 4),
+            nonStrikerScore = BatsmanScore(1, 0),
+            bowlerScore = BowlerScore(id = 0, runs = 0, legalBalls = 0, wickets = 0),
+        )
+
+        assertEquals(expectedScoreCard, actualScoreCard)
+    }
+
+    @Test
+    fun `updates non strikers score card`() {
+        val inning = Inning(2, listOf(0, 1, 2))
+        inning.registerBall(NoWicketBall(2))
+        inning.registerBall(NoWicketBall(3))
+        inning.registerBall(NoWicketBall(3))
+        inning.registerBall(NoWicketBall(2))
+
+        val actualScoreCard = inning.scoreCard()
+        val expectedScoreCard = ScoreCardSummary(
+            teamScore = TeamScore(
+                run = 10,
+                wickets = 0,
+                overNumber = 0,
+                ballNumber = 4,
+            ),
+            strikerScore = BatsmanScore(0, 7),
+            nonStrikerScore = BatsmanScore(1, 3),
+            bowlerScore = BowlerScore(id = 0, runs = 0, legalBalls = 0, wickets = 0),
         )
 
         assertEquals(expectedScoreCard, actualScoreCard)

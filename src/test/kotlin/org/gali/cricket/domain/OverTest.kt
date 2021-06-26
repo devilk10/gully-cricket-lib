@@ -75,7 +75,7 @@ internal class OverTest {
         assertEquals(Over(0, listOf()).totalRuns(), 0)
         assertEquals(Over(0, listOf(noWicketBall, noWicketBall)).totalRuns(), 4)
         assertEquals(Over(0, listOf(noWicketBall, WideBall())).totalRuns(), 3)
-        assertEquals(Over(0, listOf(noWicketBall, WideBall(), WicketBall(runs = 3, wicket =Bowled(
+        assertEquals(Over(0, listOf(noWicketBall, WideBall(), WicketBall(run = 3, wicket =Bowled(
             playerId = 0,
             byPlayerId = 0
         )))).totalRuns(), 6)
