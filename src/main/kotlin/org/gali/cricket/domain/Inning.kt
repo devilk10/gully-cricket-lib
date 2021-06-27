@@ -16,6 +16,10 @@ class Inning(private val maxOver: Int, private val battingTeamPlayers: List<Int>
             Over(currentOver.number + 1, listOf(ball)).apply { overs.add(this) }
         } else {
             currentOver.copy(balls = currentOver.balls + ball).apply { overs[number] = this }
+        }.also {
+            if (it.isCompleted()) {
+                changeStrike()
+            }
         }
     }
 
@@ -23,8 +27,8 @@ class Inning(private val maxOver: Int, private val battingTeamPlayers: List<Int>
     fun scoreCard(): ScoreCardSummary {
         return ScoreCardSummary(
             teamScore = TeamScore(
-                run = overs.sumBy { it.totalRuns() },
-                wickets = overs.sumBy { it.totalWickets() },
+                run = overs.sumOf { it.totalRuns() },
+                wickets = overs.sumOf { it.totalWickets() },
                 overNumber = currentOver().number,
                 ballNumber = currentOver().numberOfLegalBalls()
             ),
@@ -45,10 +49,12 @@ class Inning(private val maxOver: Int, private val battingTeamPlayers: List<Int>
     }
 
     private fun updateStrike(ball: Ball) {
-        if (ball.run % 2 != 0) {
-            val swapped = Pair(onStrikePlayerIndex, onNonStrikePlayerIndex)
-            onStrikePlayerIndex = swapped.second
-            onNonStrikePlayerIndex = swapped.first
-        }
+        if (ball.run % 2 != 0) changeStrike()
+    }
+
+    private fun changeStrike() {
+        val swapped = Pair(onStrikePlayerIndex, onNonStrikePlayerIndex)
+        onStrikePlayerIndex = swapped.second
+        onNonStrikePlayerIndex = swapped.first
     }
 }

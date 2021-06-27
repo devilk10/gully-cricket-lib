@@ -117,8 +117,8 @@ class InningTest {
                 overNumber = 1,
                 ballNumber = 1,
             ),
-            strikerScore = BatsmanScore(0, 28),
-            nonStrikerScore = BatsmanScore(1, 0),
+            strikerScore = BatsmanScore(1, 4),
+            nonStrikerScore = BatsmanScore(0, 24),
             bowlerScore = BowlerScore(id = 0, runs = 0, legalBalls = 0, wickets = 0),
         )
 
