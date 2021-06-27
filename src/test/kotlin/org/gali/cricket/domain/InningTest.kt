@@ -112,7 +112,7 @@ class InningTest {
 
     @Test
     fun `updates score when wicket is fallen`() {
-        val inning = Inning(2, listOf(0, 1), listOf(12))
+        val inning = Inning(2, listOf(0, 1, 2), listOf(12))
         val ball = WicketBall(wicket = Bowled(playerId = 0), run = 0)
         inning.registerBall(ball)
 
@@ -134,8 +134,8 @@ class InningTest {
         inning.registerBall(ball)
 
         val actualScoreCard = inning.scoreCard()
-        val expectedStrikerScore = BatsmanScore(0, 4)
-        val expectedNonStrikerScore = BatsmanScore(1, 0)
+        val expectedStrikerScore = BatsmanScore(0, 4, 1)
+        val expectedNonStrikerScore = BatsmanScore(1, 0, 0)
 
         assertEquals(expectedStrikerScore, actualScoreCard.strikerScore)
         assertEquals(expectedNonStrikerScore, actualScoreCard.nonStrikerScore)
@@ -150,8 +150,8 @@ class InningTest {
         inning.registerBall(NoWicketBall(2))
 
         val actualScoreCard = inning.scoreCard()
-        val expectedStrikerScore = BatsmanScore(0, 7)
-        val expectedNonStrikerScore = BatsmanScore(1, 3)
+        val expectedStrikerScore = BatsmanScore(0, 7, 3)
+        val expectedNonStrikerScore = BatsmanScore(1, 3, 1)
 
         assertEquals(expectedNonStrikerScore, actualScoreCard.nonStrikerScore)
         assertEquals(expectedStrikerScore, actualScoreCard.strikerScore)
@@ -209,7 +209,7 @@ class InningTest {
 
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(id = 3, run = 0), scoreCard.strikerScore)
-        assertEquals(BatsmanScore(id = 2, run = 0), scoreCard.nonStrikerScore)
+        assertEquals(BatsmanScore(id = 3, run = 0, balls = 0), scoreCard.strikerScore)
+        assertEquals(BatsmanScore(id = 2, run = 0, balls = 0), scoreCard.nonStrikerScore)
     }
 }

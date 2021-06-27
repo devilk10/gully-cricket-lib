@@ -5,7 +5,7 @@ import kotlin.math.max
 class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: List<Int>) {
 
     private val overs = mutableListOf(Over(number = 0, balls = listOf()))
-    private val batsmanScore = battingTeamPlayers.map { BatsmanScore(it, 0) }.toMutableList()
+    private val batsmanScore = battingTeamPlayers.map { BatsmanScore(it, 0, 0) }.toMutableList()
     private val bowlingScore = bowlingTeamPlayers.map { BowlerScore(it, 0, 0, 0) }.toMutableList()
 
     private var onStrikePlayerIndex = 0
@@ -69,7 +69,7 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
 
     private fun updateScoreOnStrikeBatsman(ball: Ball) {
         val score = batsmanScore[onStrikePlayerIndex]
-        val updatedScore = score.copy(run = score.run + ball.playerScoredRun())
+        val updatedScore = score.copy(run = score.run + ball.playerScoredRun(), balls = score.balls + 1)
         batsmanScore[onStrikePlayerIndex] = updatedScore
     }
 
