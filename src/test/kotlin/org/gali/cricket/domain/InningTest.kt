@@ -113,7 +113,7 @@ class InningTest {
     @Test
     fun `updates score when wicket is fallen`() {
         val inning = Inning(2, listOf(0, 1), listOf(12))
-        val ball = WicketBall(wicket = Bowled(playerId = 0, byPlayerId = 1), run = 0)
+        val ball = WicketBall(wicket = Bowled(playerId = 0), run = 0)
         inning.registerBall(ball)
 
         val actualScoreCard = inning.scoreCard()
@@ -165,7 +165,7 @@ class InningTest {
         inning.registerBall(NoWicketBall(3))
         inning.registerBall(WideBall(0))
         inning.registerBall(NoWicketBall(2))
-        inning.registerBall(WicketBall(0, Bowled(0, 0)))
+        inning.registerBall(WicketBall(0, Bowled(0)))
 
         val actualScoreCard = inning.scoreCard()
         val expectedBowlerScoreCard = BowlerScore(12, 11, 5, 1)
@@ -199,5 +199,17 @@ class InningTest {
         val expectedBowlerScoreCard = BowlerScore(12, 6, 6, 0)
 
         assertEquals(expectedBowlerScoreCard, actualScoreCard.bowlerScore)
+    }
+
+    @Test
+    fun `update batsman on wicket`() {
+        val inning = Inning(6, listOf(1, 2, 3), listOf(12, 13, 14))
+
+        inning.registerBall(WicketBall(0, Bowled(playerId = 1)))
+
+        val scoreCard = inning.scoreCard()
+
+        assertEquals(BatsmanScore(id = 3, run = 0), scoreCard.strikerScore)
+        assertEquals(BatsmanScore(id = 2, run = 0), scoreCard.nonStrikerScore)
     }
 }

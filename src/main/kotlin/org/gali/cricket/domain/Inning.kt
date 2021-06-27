@@ -1,5 +1,7 @@
 package org.gali.cricket.domain
 
+import kotlin.math.max
+
 class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: List<Int>) {
 
     private val overs = mutableListOf(Over(number = 0, balls = listOf()))
@@ -72,6 +74,9 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
     }
 
     private fun updateStrike(ball: Ball) {
+        if (ball.hasWicket()) {
+            onStrikePlayerIndex = max(onStrikePlayerIndex, onNonStrikePlayerIndex) + 1
+        }
         if (ball.run % 2 != 0) changeStrike()
     }
 

@@ -9,7 +9,7 @@ internal class OverTest {
     @Test
     fun `an over less than 6 legal deliveries is not completed`() {
         val noWicketBall = NoWicketBall(2)
-        val wicketBall = WicketBall(wicket = Bowled(0, 0))
+        val wicketBall = WicketBall(wicket = Bowled(0))
         val wideBall = WideBall(2)
 
         assertFalse(Over(0, listOf(noWicketBall)).isCompleted())
@@ -27,7 +27,7 @@ internal class OverTest {
     @Test
     fun `an over with 6 legal deliveries is completed`() {
         val noWicketBall = NoWicketBall(2)
-        val wicketBall = WicketBall(wicket = Bowled(0, 0))
+        val wicketBall = WicketBall(wicket = Bowled(0))
         val wideBall = WideBall(2)
 
         assertTrue(Over(0, listOf(
@@ -52,7 +52,7 @@ internal class OverTest {
 
     @Test
     fun `gives total wickets in the over`() {
-        val wicketBall = WicketBall(wicket = Bowled(0, 0))
+        val wicketBall = WicketBall(wicket = Bowled(0))
 
         assertEquals(
             Over(0, listOf()).totalWickets(),
@@ -76,15 +76,14 @@ internal class OverTest {
         assertEquals(Over(0, listOf(noWicketBall, noWicketBall)).totalRuns(), 4)
         assertEquals(Over(0, listOf(noWicketBall, WideBall())).totalRuns(), 3)
         assertEquals(Over(0, listOf(noWicketBall, WideBall(), WicketBall(run = 3, wicket =Bowled(
-            playerId = 0,
-            byPlayerId = 0
+            playerId = 0
         )))).totalRuns(), 6)
     }
 
     @Test
     fun `gives number of legal balls`() {
         val noWicketBall = NoWicketBall(2)
-        val wicketBall = WicketBall(wicket = Bowled(0, 0))
+        val wicketBall = WicketBall(wicket = Bowled(0))
         val wideBall = WideBall(2)
 
         assertEquals(Over(0, listOf()).numberOfLegalBalls(), 0)
