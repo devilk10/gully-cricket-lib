@@ -1,14 +1,18 @@
 package org.gali.cricket.domain
 
-class Inning(private val maxOver: Int, private val battingTeamPlayers: List<Int>) {
+class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: List<Int>) {
 
     private val overs = mutableListOf(Over(number = 0, balls = listOf()))
     private val batsmanScore = battingTeamPlayers.map { BatsmanScore(it, 0) }.toMutableList()
+    private val bowlingScore = bowlingTeamPlayers.map { BowlerScore(it, 0, 0, 0) }.toMutableList()
+
     private var onStrikePlayerIndex = 0
     private var onNonStrikePlayerIndex = 1
+    private var bowlerIndex = 0
 
     fun registerBall(ball: Ball): Over {
         updateScoreOnStrikeBatsman(ball)
+        updateBowlerScore(ball)
         updateStrike(ball)
         val currentOver = currentOver()
 
@@ -19,7 +23,26 @@ class Inning(private val maxOver: Int, private val battingTeamPlayers: List<Int>
         }.also {
             if (it.isCompleted()) {
                 changeStrike()
+                updateBowler()
             }
+        }
+    }
+
+    private fun updateBowlerScore(ball: Ball) {
+        val bowlerScore = bowlingScore[bowlerIndex]
+
+        bowlingScore[bowlerIndex] = bowlerScore.copy(
+            runs = bowlerScore.runs + ball.totalRun(),
+            legalBalls = bowlerScore.legalBalls + if (ball.isLegal()) 1 else 0,
+            wickets = bowlerScore.wickets + if (ball.hasWicket()) 1 else 0
+        )
+    }
+
+    private fun updateBowler() {
+        bowlerIndex += 1
+
+        if (bowlerIndex == bowlingScore.size) {
+            bowlerIndex = 0
         }
     }
 
@@ -34,7 +57,7 @@ class Inning(private val maxOver: Int, private val battingTeamPlayers: List<Int>
             ),
             strikerScore = batsmanScore[onStrikePlayerIndex],
             nonStrikerScore = batsmanScore[onNonStrikePlayerIndex],
-            bowlerScore = BowlerScore(id = 0, runs = 0, legalBalls = 0, wickets = 0),
+            bowlerScore = bowlingScore[bowlerIndex]
         )
     }
 
