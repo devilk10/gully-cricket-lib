@@ -31,5 +31,5 @@ compileTestKotlin {
 }
 
 application {
-    mainClassName = 'MainKt'
+    mainClass.set("org.gali.cricket.Application.kt")
 }

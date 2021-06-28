@@ -1,12 +1,12 @@
 package org.gali.cricket.domain
 
-import kotlin.math.max
-
 class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: List<Int>) {
 
     private val overs = mutableListOf(Over(number = 0, balls = listOf()))
-    private val batsmanScore = battingTeamPlayers.map { BatsmanScore(it, 0, 0) }.toMutableList()
-    private val bowlingScore = bowlingTeamPlayers.map { BowlerScore(it, 0, 0, 0) }.toMutableList()
+    private val batsmanScore =
+        battingTeamPlayers.map { BatsmanScore(it, 0, 0, BattingState.NOT_BATTED) }.toMutableList()
+    private val bowlingScore =
+        bowlingTeamPlayers.map { BowlerScore(it, 0, 0, 0) }.toMutableList()
 
     private var onStrikePlayerIndex = 0
     private var onNonStrikePlayerIndex = 1
@@ -75,7 +75,12 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
 
     private fun updateStrike(ball: Ball) {
         if (ball.hasWicket()) {
-            onStrikePlayerIndex = max(onStrikePlayerIndex, onNonStrikePlayerIndex) + 1
+            val wicket = ball.wicket!!
+            if (batsmanScore[onStrikePlayerIndex].id == wicket.playerId) {
+                batsmanScore[onStrikePlayerIndex].battingState = BattingState.OUT
+            } else {
+                batsmanScore[onNonStrikePlayerIndex].battingState = BattingState.OUT
+            }
         }
         if (ball.run % 2 != 0) changeStrike()
     }
@@ -84,5 +89,11 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
         val swapped = Pair(onStrikePlayerIndex, onNonStrikePlayerIndex)
         onStrikePlayerIndex = swapped.second
         onNonStrikePlayerIndex = swapped.first
+    }
+
+    fun setBatsman(newBatsman: Int) {
+        batsmanScore[newBatsman].battingState = BattingState.BATTING
+        if (batsmanScore[onStrikePlayerIndex].battingState == BattingState.OUT) onStrikePlayerIndex = newBatsman
+        else onNonStrikePlayerIndex = newBatsman
     }
 }

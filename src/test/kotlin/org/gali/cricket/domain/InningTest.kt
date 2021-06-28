@@ -134,8 +134,8 @@ class InningTest {
         inning.registerBall(ball)
 
         val actualScoreCard = inning.scoreCard()
-        val expectedStrikerScore = BatsmanScore(0, 4, 1)
-        val expectedNonStrikerScore = BatsmanScore(1, 0, 0)
+        val expectedStrikerScore = BatsmanScore(0, 4, 1, BattingState.NOT_BATTED)
+        val expectedNonStrikerScore = BatsmanScore(1, 0, 0, BattingState.NOT_BATTED)
 
         assertEquals(expectedStrikerScore, actualScoreCard.strikerScore)
         assertEquals(expectedNonStrikerScore, actualScoreCard.nonStrikerScore)
@@ -150,8 +150,8 @@ class InningTest {
         inning.registerBall(NoWicketBall(2))
 
         val actualScoreCard = inning.scoreCard()
-        val expectedStrikerScore = BatsmanScore(0, 7, 3)
-        val expectedNonStrikerScore = BatsmanScore(1, 3, 1)
+        val expectedStrikerScore = BatsmanScore(0, 7, 3, BattingState.NOT_BATTED)
+        val expectedNonStrikerScore = BatsmanScore(1, 3, 1, BattingState.NOT_BATTED)
 
         assertEquals(expectedNonStrikerScore, actualScoreCard.nonStrikerScore)
         assertEquals(expectedStrikerScore, actualScoreCard.strikerScore)
@@ -209,7 +209,31 @@ class InningTest {
 
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(id = 3, run = 0, balls = 0), scoreCard.strikerScore)
-        assertEquals(BatsmanScore(id = 2, run = 0, balls = 0), scoreCard.nonStrikerScore)
+        assertEquals(BatsmanScore(id = 1, run = 0, balls = 1, battingState = BattingState.OUT), scoreCard.strikerScore)
+        assertEquals(BatsmanScore(id = 2, run = 0, balls = 0, battingState = BattingState.NOT_BATTED), scoreCard.nonStrikerScore)
+    }
+
+    @Test
+    fun `set new batsman when striker gets out`() {
+        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13))
+        inning.registerBall(WicketBall(0, Bowled(0)))
+
+        inning.setBatsman(2)
+        val scoreCard = inning.scoreCard()
+
+        assertEquals(BatsmanScore(1, 0, 0, BattingState.NOT_BATTED), scoreCard.nonStrikerScore)
+        assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING), scoreCard.strikerScore)
+    }
+
+    @Test
+    fun `set new batsman when non striker gets out`() {
+        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13))
+        inning.registerBall(WicketBall(1, RunOut(1, 12)))
+
+        inning.setBatsman(2)
+        val scoreCard = inning.scoreCard()
+
+        assertEquals(BatsmanScore(0, 1, 1, BattingState.NOT_BATTED), scoreCard.nonStrikerScore)
+        assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING), scoreCard.strikerScore)
     }
 }

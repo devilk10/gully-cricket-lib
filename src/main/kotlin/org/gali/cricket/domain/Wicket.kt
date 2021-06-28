@@ -1,6 +1,8 @@
 package org.gali.cricket.domain
 
-sealed class Wicket
+sealed class Wicket {
+    abstract val playerId: Int
+}
 
-data class RunOut(val playerId: Int, val byPlayerId: Int) : Wicket()
-data class Bowled(val playerId: Int) : Wicket()
+data class RunOut(override val playerId: Int, val byPlayerId: Int) : Wicket()
+data class Bowled(override val playerId: Int) : Wicket()
