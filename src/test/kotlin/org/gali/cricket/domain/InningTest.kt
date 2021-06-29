@@ -174,34 +174,6 @@ class InningTest {
     }
 
     @Test
-    fun `updates bowler on over completion`() {
-        val inning = Inning(2, listOf(0, 1, 2), listOf(12, 13))
-
-        repeat(7) {
-            inning.registerBall(NoWicketBall(1))
-        }
-
-        val actualScoreCard = inning.scoreCard()
-        val expectedBowlerScoreCard = BowlerScore(13, 1, 1, 0)
-
-        assertEquals(expectedBowlerScoreCard, actualScoreCard.bowlerScore)
-    }
-
-    @Test
-    fun `updates bowler when all bowler are done with bowling`() {
-        val inning = Inning(2, listOf(0, 1, 2), listOf(12, 13))
-
-        repeat(12) {
-            inning.registerBall(NoWicketBall(1))
-        }
-
-        val actualScoreCard = inning.scoreCard()
-        val expectedBowlerScoreCard = BowlerScore(12, 6, 6, 0)
-
-        assertEquals(expectedBowlerScoreCard, actualScoreCard.bowlerScore)
-    }
-
-    @Test
     fun `update batsman on wicket`() {
         val inning = Inning(6, listOf(1, 2, 3), listOf(12, 13, 14))
 
@@ -210,7 +182,10 @@ class InningTest {
         val scoreCard = inning.scoreCard()
 
         assertEquals(BatsmanScore(id = 1, run = 0, balls = 1, battingState = BattingState.OUT), scoreCard.strikerScore)
-        assertEquals(BatsmanScore(id = 2, run = 0, balls = 0, battingState = BattingState.NOT_BATTED), scoreCard.nonStrikerScore)
+        assertEquals(
+            BatsmanScore(id = 2, run = 0, balls = 0, battingState = BattingState.NOT_BATTED),
+            scoreCard.nonStrikerScore
+        )
     }
 
     @Test
@@ -235,5 +210,20 @@ class InningTest {
 
         assertEquals(BatsmanScore(0, 1, 1, BattingState.NOT_BATTED), scoreCard.nonStrikerScore)
         assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING), scoreCard.strikerScore)
+    }
+
+    @Test
+    fun `set new bowler when over is finished`() {
+        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13, 14))
+        repeat(6) {
+            inning.registerBall(NoWicketBall(1))
+        }
+        inning.setBowler(14)
+        repeat(3) {
+            inning.registerBall(NoWicketBall(1))
+        }
+        val scoreCard = inning.scoreCard()
+
+        assertEquals(BowlerScore(14, 3, 3, 0), scoreCard.bowlerScore)
     }
 }

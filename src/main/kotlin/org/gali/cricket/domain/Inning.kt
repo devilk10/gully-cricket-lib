@@ -25,7 +25,6 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
         }.also {
             if (it.isCompleted()) {
                 changeStrike()
-                updateBowler()
             }
         }
     }
@@ -38,14 +37,6 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
             legalBalls = bowlerScore.legalBalls + if (ball.isLegal()) 1 else 0,
             wickets = bowlerScore.wickets + if (ball.hasWicket()) 1 else 0
         )
-    }
-
-    private fun updateBowler() {
-        bowlerIndex += 1
-
-        if (bowlerIndex == bowlingScore.size) {
-            bowlerIndex = 0
-        }
     }
 
 
@@ -95,5 +86,11 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
         batsmanScore[newBatsman].battingState = BattingState.BATTING
         if (batsmanScore[onStrikePlayerIndex].battingState == BattingState.OUT) onStrikePlayerIndex = newBatsman
         else onNonStrikePlayerIndex = newBatsman
+    }
+
+    fun setBowler(playerId: Int) {
+        bowlerIndex = bowlingScore.indexOfFirst {
+            it.id == playerId
+        }
     }
 }
