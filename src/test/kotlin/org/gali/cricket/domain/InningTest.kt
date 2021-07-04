@@ -185,9 +185,9 @@ class InningTest {
 
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(id = 1, run = 0, balls = 1, battingState = BattingState.OUT), scoreCard.strikerScore)
+        assertEquals(BatsmanScore(id = 1, runs = 0, balls = 1, battingState = BattingState.OUT), scoreCard.strikerScore)
         assertEquals(
-            BatsmanScore(id = 2, run = 0, balls = 0, battingState = BattingState.NOT_BATTED),
+            BatsmanScore(id = 2, runs = 0, balls = 0, battingState = BattingState.NOT_BATTED),
             scoreCard.nonStrikerScore
         )
     }

@@ -61,7 +61,7 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
 
     private fun updateScoreOnStrikeBatsman(ball: Ball) {
         val score = batsmanScore[onStrikePlayerIndex]
-        val updatedScore = score.copy(run = score.run + ball.playerScoredRun(), balls = score.balls + 1)
+        val updatedScore = score.copy(runs = score.runs + ball.playerScoredRun(), balls = score.balls + 1)
         batsmanScore[onStrikePlayerIndex] = updatedScore
     }
 
