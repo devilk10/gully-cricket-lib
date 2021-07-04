@@ -68,6 +68,7 @@ class InningTest {
             wickets = 0,
             overNumber = 0,
             ballNumber = 0,
+            inningState = InningState.IN_PROGRESS,
         )
 
         assertEquals(expectedTeamScore, actualScoreCard.teamScore)
@@ -84,6 +85,7 @@ class InningTest {
             wickets = 0,
             overNumber = 0,
             ballNumber = 1,
+            inningState = InningState.IN_PROGRESS,
         )
 
         assertEquals(expectedTeamScore, actualScoreCard.teamScore)
@@ -105,6 +107,7 @@ class InningTest {
             wickets = 0,
             overNumber = 1,
             ballNumber = 1,
+            inningState = InningState.IN_PROGRESS,
         )
 
         assertEquals(expectedTeamScore, actualScoreCard.teamScore)
@@ -122,6 +125,7 @@ class InningTest {
             wickets = 1,
             overNumber = 0,
             ballNumber = 1,
+            inningState = InningState.IN_PROGRESS,
         )
 
         assertEquals(expectedScoreCard, actualScoreCard.teamScore)
@@ -225,5 +229,18 @@ class InningTest {
         val scoreCard = inning.scoreCard()
 
         assertEquals(BowlerScore(14, 3, 3, 0), scoreCard.bowlerScore)
+    }
+
+    @Test
+    fun shouldMarkInningsCompletedWhenLastOverIsCompleted() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14))
+        repeat(6) {
+            inning.registerBall(NoWicketBall(1))
+        }
+        val teamScore = inning.scoreCard().teamScore
+        assertEquals(
+            teamScore,
+            TeamScore(run = 6, wickets = 0, overNumber = 0, ballNumber = 6, inningState = InningState.Completed)
+        )
     }
 }

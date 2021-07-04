@@ -46,7 +46,8 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
                 run = overs.sumOf { it.totalRuns() },
                 wickets = overs.sumOf { it.totalWickets() },
                 overNumber = currentOver().number,
-                ballNumber = currentOver().numberOfLegalBalls()
+                ballNumber = currentOver().numberOfLegalBalls(),
+                inningState = if (isCompleted()) InningState.Completed else InningState.IN_PROGRESS
             ),
             strikerScore = batsmanScore[onStrikePlayerIndex],
             nonStrikerScore = batsmanScore[onNonStrikePlayerIndex],

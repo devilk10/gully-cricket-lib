@@ -1,8 +1,42 @@
-import org.junit.Test
+import org.gali.cricket.domain.*
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
-internal class MatchTest{
+class MatchTest {
+
     @Test
-    fun shouldHave2Teams(){
-
+    fun shouldUpdateScorecardOfTeam() {
+        val player = Player(0, "ketan")
+        val player1 = Player(1, "Ashish")
+        val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 6)
+        match.registerBall(NoWicketBall(4))
+        val expectedTeamScore = TeamScore(
+            run = 4,
+            wickets = 0,
+            overNumber = 0,
+            ballNumber = 1,
+            inningState = InningState.IN_PROGRESS,
+        )
+        assertEquals(match.scoreCard().teamScore, expectedTeamScore)
     }
+
+    @Test
+    fun shouldChangeInningsWhenOversAreBowledForOneInning() {
+        val player = Player(0, "ketan")
+        val player1 = Player(1, "Ashish")
+        val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 1)
+        repeat(6) {
+            match.registerBall(NoWicketBall(4))
+        }
+        match.startSecondInning()
+        val expectedTeamScore = TeamScore(
+            run = 0,
+            wickets = 0,
+            overNumber = 0,
+            ballNumber = 0,
+            inningState = InningState.IN_PROGRESS,
+        )
+        assertEquals(match.scoreCard().teamScore, expectedTeamScore)
+    }
+
 }
