@@ -2,7 +2,7 @@ package org.gali.cricket.domain
 
 class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: List<Int>) {
 
-    private val overs = mutableListOf(Over(number = 0, balls = listOf()))
+    private val overs = Overs(maxOver)
     private val batsmanScore =
         battingTeamPlayers.map { BatsmanScore(it, 0, 0, BattingState.NOT_BATTED) }.toMutableList()
     private val bowlingScore =
@@ -16,17 +16,12 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
         updateScoreOnStrikeBatsman(ball)
         updateBowlerScore(ball)
         updateStrike(ball)
-        val currentOver = currentOver()
-
-        return if (currentOver.isCompleted()) {
-            Over(currentOver.number + 1, listOf(ball)).apply { overs.add(this) }
-        } else {
-            currentOver.copy(balls = currentOver.balls + ball).apply { overs[number] = this }
-        }.also {
-            if (it.isCompleted()) {
-                changeStrike()
+        return overs.addBall(ball)
+            .also {
+                if (it.isCompleted()) {
+                    changeStrike()
+                }
             }
-        }
     }
 
     private fun updateBowlerScore(ball: Ball) {
@@ -43,21 +38,17 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
     fun scoreCard(): ScoreCardSummary {
         return ScoreCardSummary(
             teamScore = TeamScore(
-                run = overs.sumOf { it.totalRuns() },
-                wickets = overs.sumOf { it.totalWickets() },
-                overNumber = currentOver().number,
-                ballNumber = currentOver().numberOfLegalBalls(),
-                inningState = if (isCompleted()) InningState.Completed else InningState.IN_PROGRESS
+                run = overs.totalRuns(),
+                wickets = overs.totalWicket(),
+                overNumber = overs.currentOverNumber(),
+                ballNumber = overs.currentOverBalls(),
+                inningState = if (overs.isCompleted()) InningState.Completed else InningState.IN_PROGRESS
             ),
             strikerScore = batsmanScore[onStrikePlayerIndex],
             nonStrikerScore = batsmanScore[onNonStrikePlayerIndex],
             bowlerScore = bowlingScore[bowlerIndex]
         )
     }
-
-    fun isCompleted(): Boolean = overs.size == maxOver && currentOver().isCompleted()
-
-    private fun currentOver() = overs.last()
 
     private fun updateScoreOnStrikeBatsman(ball: Ball) {
         val score = batsmanScore[onStrikePlayerIndex]
@@ -94,4 +85,6 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
             it.id == playerId
         }
     }
+
+    fun isCompleted(): Boolean  = overs.isCompleted()
 }

@@ -34,5 +34,5 @@ fun BatsmanScore.displayString(): String {
 }
 
 fun BowlerScore.displayString(): String {
-    return "$id $runs ${legalBalls / 6}"
+    return "$id $runs ${legalBalls / 6}.${legalBalls % 6}"
 }

@@ -7,46 +7,6 @@ import kotlin.test.assertTrue
 class InningTest {
 
     @Test
-    fun `should return register first ball over`() {
-        val inning = Inning(2, listOf(0, 1), listOf(12))
-        val ball = NoWicketBall(2)
-
-        val actualOver = inning.registerBall(ball)
-
-        val expectedOver = Over(number = 0, balls = listOf(ball))
-
-        assertEquals(actualOver, expectedOver)
-    }
-
-    @Test
-    fun `should return register second ball of over`() {
-        val inning = Inning(2, listOf(0, 1), listOf(12))
-        val ball1 = NoWicketBall(2)
-        val ball2 = WideBall(1)
-
-        inning.registerBall(ball1)
-        val actualOver = inning.registerBall(ball2)
-
-        val expectedOver = Over(number = 0, balls = listOf(ball1, ball2))
-
-        assertEquals(actualOver, expectedOver)
-    }
-
-    @Test
-    fun `create a new over when current over is completed`() {
-        val inning = Inning(2, listOf(0, 1), listOf(12))
-        val noWicketBall = NoWicketBall(1)
-
-        repeat(6) {
-            inning.registerBall(noWicketBall)
-        }
-
-        val over = inning.registerBall(noWicketBall)
-
-        assertEquals(over, Over(1, listOf(noWicketBall)))
-    }
-
-    @Test
     fun `a inning is completed when last over is completed`() {
         val inning = Inning(2, listOf(0, 1), listOf(12))
         val noWicketBall = NoWicketBall(1)
