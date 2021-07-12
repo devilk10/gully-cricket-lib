@@ -12,11 +12,11 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
     private var onNonStrikePlayerIndex = 1
     private var bowlerIndex = 0
 
-    fun registerBall(ball: Ball): Over {
+    fun registerBall(ball: Ball) {
         updateScoreOnStrikeBatsman(ball)
         updateBowlerScore(ball)
         updateStrike(ball)
-        return overs.addBall(ball)
+        overs.addBall(ball)
             .also {
                 if (it.isCompleted()) {
                     changeStrike()
@@ -86,5 +86,5 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
         }
     }
 
-    fun isCompleted(): Boolean  = overs.isCompleted()
+    fun isCompleted(): Boolean = overs.isCompleted()
 }

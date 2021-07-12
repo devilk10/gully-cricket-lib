@@ -6,8 +6,8 @@ class Match(private val teams: Pair<Team, Team>, private val maxOvers: Int) {
 
     fun scoreCard() = currentInning.scoreCard()
 
-    fun registerBall(ball: Ball): Over {
-        return currentInning.registerBall(ball)
+    fun registerBall(ball: Ball) {
+        currentInning.registerBall(ball)
     }
 
     fun startSecondInning() {
