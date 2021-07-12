@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 class MatchTest {
 
     @Test
-    fun shouldUpdateScorecardOfTeam() {
+    fun `should update scorecard of the team`() {
         val player = Player(0, "ketan")
         val player1 = Player(1, "Ashish")
         val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 6)
@@ -21,7 +21,7 @@ class MatchTest {
     }
 
     @Test
-    fun shouldChangeInningsWhenOversAreBowledForOneInning() {
+    fun `should change innings when overs are bowled for one inning`() {
         val player = Player(0, "ketan")
         val player1 = Player(1, "Ashish")
         val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 1)

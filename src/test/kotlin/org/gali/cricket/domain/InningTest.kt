@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 class InningTest {
 
     @Test
-    fun `a inning is completed when last over is completed`() {
+    fun `should complete inning when last over is completed`() {
         val inning = Inning(2, listOf(0, 1), listOf(12))
         val noWicketBall = NoWicketBall(1)
 
@@ -19,7 +19,7 @@ class InningTest {
     }
 
     @Test
-    fun `gives score for zero balls`() {
+    fun `should give score for zero balls`() {
         val inning = Inning(2, listOf(0, 1), listOf(12))
         val actualScoreCard = inning.scoreCard()
 
@@ -35,7 +35,7 @@ class InningTest {
     }
 
     @Test
-    fun `gives score for 1 ball`() {
+    fun `should gives score for 1 ball`() {
         val inning = Inning(2, listOf(0, 1), listOf(12))
         val ball = NoWicketBall(4)
         inning.registerBall(ball)
@@ -52,7 +52,7 @@ class InningTest {
     }
 
     @Test
-    fun `gives score for 1 over and 1 ball`() {
+    fun `should give score for 1 over and 1 ball`() {
         val inning = Inning(2, listOf(0, 1), listOf(12))
         val ball = NoWicketBall(4)
         val wideBall = WideBall()
@@ -74,7 +74,7 @@ class InningTest {
     }
 
     @Test
-    fun `updates score when wicket is fallen`() {
+    fun `should update score when wicket is fallen`() {
         val inning = Inning(2, listOf(0, 1, 2), listOf(12))
         val ball = WicketBall(wicket = Bowled(playerId = 0), run = 0)
         inning.registerBall(ball)
@@ -92,7 +92,7 @@ class InningTest {
     }
 
     @Test
-    fun `updates batsman score card`() {
+    fun `should update batsman score card`() {
         val inning = Inning(2, listOf(0, 1, 2), listOf(12))
         val ball = NoWicketBall(4)
         inning.registerBall(ball)
@@ -106,7 +106,7 @@ class InningTest {
     }
 
     @Test
-    fun `updates non strikers score card`() {
+    fun `should update non strikers score card`() {
         val inning = Inning(2, listOf(0, 1, 2), listOf(12))
         inning.registerBall(NoWicketBall(2))
         inning.registerBall(NoWicketBall(3))
@@ -122,7 +122,7 @@ class InningTest {
     }
 
     @Test
-    fun `updates bowler score card`() {
+    fun `should update bowler score card`() {
         val inning = Inning(2, listOf(0, 1, 2), listOf(12))
         inning.registerBall(NoWicketBall(2))
         inning.registerBall(NoWicketBall(3))
@@ -138,7 +138,7 @@ class InningTest {
     }
 
     @Test
-    fun `update batsman on wicket`() {
+    fun `should update batsman on wicket`() {
         val inning = Inning(6, listOf(1, 2, 3), listOf(12, 13, 14))
 
         inning.registerBall(WicketBall(0, Bowled(playerId = 1)))
@@ -153,7 +153,7 @@ class InningTest {
     }
 
     @Test
-    fun `set new batsman when striker gets out`() {
+    fun `should set new batsman when striker gets out`() {
         val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13))
         inning.registerBall(WicketBall(0, Bowled(0)))
 
@@ -165,7 +165,7 @@ class InningTest {
     }
 
     @Test
-    fun `set new batsman when non striker gets out`() {
+    fun `should set new batsman when non striker gets out`() {
         val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13))
         inning.registerBall(WicketBall(1, RunOut(1, 12)))
 
@@ -177,7 +177,7 @@ class InningTest {
     }
 
     @Test
-    fun `set new bowler when over is finished`() {
+    fun `should set new bowler when over is finished`() {
         val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13, 14))
         repeat(6) {
             inning.registerBall(NoWicketBall(1))
@@ -192,7 +192,7 @@ class InningTest {
     }
 
     @Test
-    fun shouldMarkInningsCompletedWhenLastOverIsCompleted() {
+    fun `should mark innings completed when last over is completed`() {
         val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14))
         repeat(6) {
             inning.registerBall(NoWicketBall(1))

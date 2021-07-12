@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 
 class OversTest {
     @Test
-    fun `should return register first ball over`() {
+    fun `should register first ball over`() {
         val overs = Overs(2)
         val ball = NoWicketBall(2)
         val actualOver = overs.addBall(ball)
@@ -18,7 +18,7 @@ class OversTest {
     }
 
     @Test
-    fun `should return register second ball of over`() {
+    fun `should register second ball of over`() {
         val overs = Overs(2)
         val ball1 = NoWicketBall(2)
         val ball2 = WideBall(1)
@@ -32,7 +32,7 @@ class OversTest {
     }
 
     @Test
-    fun `create a new over when current over is completed`() {
+    fun `should create a new over when current over is completed`() {
         val overs = Overs(2)
         val noWicketBall = NoWicketBall(1)
 
@@ -73,7 +73,7 @@ class OversTest {
     }
 
     @Test
-    fun `overs is completed when all over are completed`() {
+    fun `should mark overs completed when all overs are completed`() {
         val overs = Overs(2)
 
         repeat(12) {
@@ -84,7 +84,7 @@ class OversTest {
     }
 
     @Test
-    fun `overs is completed when all over are not completed`() {
+    fun `should not mark overs completed when all over are not completed`() {
         val overs = Overs(2)
 
         repeat(11) {
@@ -95,7 +95,7 @@ class OversTest {
     }
 
     @Test
-    fun `gives current over number`() {
+    fun `should give current over number`() {
         val overs = Overs(2)
 
         repeat(10) {
@@ -106,7 +106,7 @@ class OversTest {
     }
 
     @Test
-    fun `gives current over balls`() {
+    fun `should give current over balls`() {
         val overs = Overs(2)
 
         repeat(10) {
