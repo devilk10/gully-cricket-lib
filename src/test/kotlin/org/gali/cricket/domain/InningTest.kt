@@ -203,4 +203,16 @@ class InningTest {
             TeamScore(run = 6, wickets = 0, overNumber = 0, ballNumber = 6, inningState = InningState.Completed)
         )
     }
+
+    @Test
+    fun `should mark innings completed when all wicket falls`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14))
+       inning.registerBall(WicketBall(0, Bowled(12)))
+       inning.registerBall(WicketBall(0, Bowled(12)))
+        val teamScore = inning.scoreCard().teamScore
+        assertEquals(
+            teamScore,
+            TeamScore(run = 0, wickets = 2, overNumber = 0, ballNumber = 2, inningState = InningState.Completed)
+        )
+    }
 }

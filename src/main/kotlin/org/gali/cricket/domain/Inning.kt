@@ -1,6 +1,6 @@
 package org.gali.cricket.domain
 
-class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: List<Int>) {
+class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: List<Int>) {
 
     private val overs = Overs(maxOver)
     private val batsmanScore =
@@ -40,12 +40,17 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
                 wickets = overs.totalWicket(),
                 overNumber = overs.currentOverNumber(),
                 ballNumber = overs.currentOverBalls(),
-                inningState = if (overs.isCompleted()) InningState.Completed else InningState.IN_PROGRESS
+                inningState = if (inningsCompleted()) InningState.Completed else InningState.IN_PROGRESS
             ),
             strikerScore = batsmanScore[onStrikePlayerIndex],
             nonStrikerScore = batsmanScore[onNonStrikePlayerIndex],
             bowlerScore = bowlingScore[bowlerIndex]
         )
+    }
+
+    private fun inningsCompleted(): Boolean {
+        val isAllOut = overs.totalWicket() == this.batsmanScore.size - 1
+        return overs.isCompleted() || isAllOut
     }
 
     private fun updateScoreOnStrikeBatsman(ball: Ball) {
