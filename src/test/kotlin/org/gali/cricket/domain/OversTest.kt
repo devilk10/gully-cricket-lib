@@ -10,25 +10,21 @@ class OversTest {
     fun `should register first ball over`() {
         val overs = Overs(2)
         val ball = NoWicketBall(2)
-        val actualOver = overs.addBall(ball)
+        overs.addBall(ball)
 
-        val expectedOver = Over(number = 0, balls = listOf(ball))
-
-        assertEquals(actualOver, expectedOver)
+        assertEquals(overs.currentOverBalls(), 1)
     }
 
     @Test
     fun `should register second ball of over`() {
         val overs = Overs(2)
         val ball1 = NoWicketBall(2)
-        val ball2 = WideBall(1)
+        val ball2 = NoWicketBall(1)
 
         overs.addBall(ball1)
-        val actualOver = overs.addBall(ball2)
+        overs.addBall(ball2)
 
-        val expectedOver = Over(number = 0, balls = listOf(ball1, ball2))
-
-        assertEquals(actualOver, expectedOver)
+        assertEquals(overs.currentOverBalls(), 2)
     }
 
     @Test
@@ -40,9 +36,9 @@ class OversTest {
             overs.addBall(noWicketBall)
         }
 
-        val over = overs.addBall(noWicketBall)
+        overs.addBall(noWicketBall)
 
-        assertEquals(over, Over(1, listOf(noWicketBall)))
+        assertEquals(overs.currentOverNumber(), 1)
     }
 
     @Test

@@ -17,11 +17,9 @@ class Inning(private val maxOver: Int, battingTeamPlayers: List<Int>, bowlingTea
         updateBowlerScore(ball)
         updateStrike(ball)
         overs.addBall(ball)
-            .also {
-                if (it.isCompleted()) {
-                    changeStrike()
-                }
-            }
+        if (overs.currentOverFinished()) {
+            changeStrike()
+        }
     }
 
     private fun updateBowlerScore(ball: Ball) {

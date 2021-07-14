@@ -10,10 +10,9 @@ data class Over(val number: Int, val balls: List<Ball>) {
 class Overs(private val size: Int) {
     private val overs = mutableListOf(Over(number = 0, balls = listOf()))
 
-    fun addBall(ball: Ball): Over {
+    fun addBall(ball: Ball) {
         val currentOver = currentOver()
-
-        return if (currentOver.isCompleted()) {
+        if (currentOver.isCompleted()) {
             Over(currentOver.number + 1, listOf(ball)).apply { overs.add(this) }
         } else {
             currentOver.copy(balls = currentOver.balls + ball).apply { overs[number] = this }
@@ -29,6 +28,8 @@ class Overs(private val size: Int) {
     fun totalRuns(): Int = overs.sumOf { it.totalRuns() }
 
     fun totalWicket(): Int = overs.sumOf { it.totalWickets() }
+
+    fun currentOverFinished(): Boolean = currentOver().isCompleted()
 
     private fun currentOver() = overs.last()
 }
