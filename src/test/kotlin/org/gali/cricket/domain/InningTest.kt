@@ -8,7 +8,7 @@ class InningTest {
 
     @Test
     fun `should complete inning when last over is completed`() {
-        val inning = Inning(2, listOf(0, 1), listOf(12))
+        val inning = Inning(2, listOf(0, 1), listOf(12), null)
         val noWicketBall = NoWicketBall(1)
 
         repeat(12) {
@@ -20,7 +20,7 @@ class InningTest {
 
     @Test
     fun `should give score for zero balls`() {
-        val inning = Inning(2, listOf(0, 1), listOf(12))
+        val inning = Inning(2, listOf(0, 1), listOf(12), null)
         val actualScoreCard = inning.scoreCard()
 
         val expectedTeamScore = TeamScore(
@@ -36,7 +36,7 @@ class InningTest {
 
     @Test
     fun `should gives score for 1 ball`() {
-        val inning = Inning(2, listOf(0, 1), listOf(12))
+        val inning = Inning(2, listOf(0, 1), listOf(12), null)
         val ball = NoWicketBall(4)
         inning.registerBall(ball)
         val actualScoreCard = inning.scoreCard()
@@ -53,7 +53,7 @@ class InningTest {
 
     @Test
     fun `should give score for 1 over and 1 ball`() {
-        val inning = Inning(2, listOf(0, 1), listOf(12))
+        val inning = Inning(2, listOf(0, 1), listOf(12), null)
         val ball = NoWicketBall(4)
         val wideBall = WideBall()
 
@@ -75,7 +75,7 @@ class InningTest {
 
     @Test
     fun `should update score when wicket is fallen`() {
-        val inning = Inning(2, listOf(0, 1, 2), listOf(12))
+        val inning = Inning(2, listOf(0, 1, 2), listOf(12), null)
         val ball = WicketBall(wicket = Bowled(playerId = 0), run = 0)
         inning.registerBall(ball)
 
@@ -93,7 +93,7 @@ class InningTest {
 
     @Test
     fun `should update batsman score card`() {
-        val inning = Inning(2, listOf(0, 1, 2), listOf(12))
+        val inning = Inning(2, listOf(0, 1, 2), listOf(12), null)
         val ball = NoWicketBall(4)
         inning.registerBall(ball)
 
@@ -107,7 +107,7 @@ class InningTest {
 
     @Test
     fun `should update non strikers score card`() {
-        val inning = Inning(2, listOf(0, 1, 2), listOf(12))
+        val inning = Inning(2, listOf(0, 1, 2), listOf(12), null)
         inning.registerBall(NoWicketBall(2))
         inning.registerBall(NoWicketBall(3))
         inning.registerBall(NoWicketBall(3))
@@ -123,7 +123,7 @@ class InningTest {
 
     @Test
     fun `should update bowler score card`() {
-        val inning = Inning(2, listOf(0, 1, 2), listOf(12))
+        val inning = Inning(2, listOf(0, 1, 2), listOf(12), null)
         inning.registerBall(NoWicketBall(2))
         inning.registerBall(NoWicketBall(3))
         inning.registerBall(NoWicketBall(3))
@@ -139,7 +139,7 @@ class InningTest {
 
     @Test
     fun `should update batsman on wicket`() {
-        val inning = Inning(6, listOf(1, 2, 3), listOf(12, 13, 14))
+        val inning = Inning(6, listOf(1, 2, 3), listOf(12, 13, 14), null)
 
         inning.registerBall(WicketBall(0, Bowled(playerId = 1)))
 
@@ -154,7 +154,7 @@ class InningTest {
 
     @Test
     fun `should set new batsman when striker gets out`() {
-        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13))
+        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13), null)
         inning.registerBall(WicketBall(0, Bowled(0)))
 
         inning.setBatsman(2)
@@ -166,7 +166,7 @@ class InningTest {
 
     @Test
     fun `should set new batsman when non striker gets out`() {
-        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13))
+        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13), null)
         inning.registerBall(WicketBall(1, RunOut(1, 12)))
 
         inning.setBatsman(2)
@@ -178,7 +178,7 @@ class InningTest {
 
     @Test
     fun `should set new bowler when over is finished`() {
-        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13, 14))
+        val inning = Inning(6, listOf(0, 1, 2), listOf(12, 13, 14), null)
         repeat(6) {
             inning.registerBall(NoWicketBall(1))
         }
@@ -193,7 +193,7 @@ class InningTest {
 
     @Test
     fun `should mark innings completed when last over is completed`() {
-        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14))
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), null)
         repeat(6) {
             inning.registerBall(NoWicketBall(1))
         }
@@ -206,13 +206,25 @@ class InningTest {
 
     @Test
     fun `should mark innings completed when all wicket falls`() {
-        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14))
-       inning.registerBall(WicketBall(0, Bowled(12)))
-       inning.registerBall(WicketBall(0, Bowled(12)))
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), null)
+        inning.registerBall(WicketBall(0, Bowled(12)))
+        inning.registerBall(WicketBall(0, Bowled(12)))
         val teamScore = inning.scoreCard().teamScore
         assertEquals(
             teamScore,
             TeamScore(run = 0, wickets = 2, overNumber = 0, ballNumber = 2, inningState = InningState.Completed)
+        )
+    }
+
+    @Test
+    fun `should mark innings completed when target is achieved`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), 10)
+        inning.registerBall(NoWicketBall(6))
+        inning.registerBall(NoWicketBall(4))
+        val teamScore = inning.scoreCard().teamScore
+        assertEquals(
+            teamScore,
+            TeamScore(run = 10, wickets = 0, overNumber = 0, ballNumber = 2, inningState = InningState.Completed)
         )
     }
 }

@@ -2,7 +2,7 @@ package org.gali.cricket.domain
 
 class Match(private val teams: Pair<Team, Team>, private val maxOvers: Int) {
     private var currentInning: Inning =
-        Inning(maxOvers, teams.first.players.map { it.id }, teams.second.players.map { it.id })
+        Inning(maxOvers, teams.first.players.map { it.id }, teams.second.players.map { it.id }, null)
 
     fun scoreCard() = currentInning.scoreCard()
 
@@ -12,6 +12,11 @@ class Match(private val teams: Pair<Team, Team>, private val maxOvers: Int) {
 
     fun startSecondInning() {
         if (currentInning.isCompleted())
-            currentInning = Inning(maxOvers, teams.second.players.map { it.id }, teams.first.players.map { it.id })
+            currentInning = Inning(
+                maxOvers,
+                teams.second.players.map { it.id },
+                teams.first.players.map { it.id },
+                null
+            )
     }
 }
