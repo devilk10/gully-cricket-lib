@@ -98,8 +98,8 @@ class InningTest {
         inning.registerBall(ball)
 
         val actualScoreCard = inning.scoreCard()
-        val expectedStrikerScore = BatsmanScore(0, 4, 1, BattingState.NOT_BATTED)
-        val expectedNonStrikerScore = BatsmanScore(1, 0, 0, BattingState.NOT_BATTED)
+        val expectedStrikerScore = BatsmanScore(0, 4, 1, BattingState.NOT_BATTED, 1, 0)
+        val expectedNonStrikerScore = BatsmanScore(1, 0, 0, BattingState.NOT_BATTED, 0, 0)
 
         assertEquals(expectedStrikerScore, actualScoreCard.strikerScore)
         assertEquals(expectedNonStrikerScore, actualScoreCard.nonStrikerScore)
@@ -114,8 +114,8 @@ class InningTest {
         inning.registerBall(NoWicketBall(2))
 
         val actualScoreCard = inning.scoreCard()
-        val expectedStrikerScore = BatsmanScore(0, 7, 3, BattingState.NOT_BATTED)
-        val expectedNonStrikerScore = BatsmanScore(1, 3, 1, BattingState.NOT_BATTED)
+        val expectedStrikerScore = BatsmanScore(0, 7, 3, BattingState.NOT_BATTED, 0, 0)
+        val expectedNonStrikerScore = BatsmanScore(1, 3, 1, BattingState.NOT_BATTED, 0, 0)
 
         assertEquals(expectedNonStrikerScore, actualScoreCard.nonStrikerScore)
         assertEquals(expectedStrikerScore, actualScoreCard.strikerScore)
@@ -145,9 +145,23 @@ class InningTest {
 
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(id = 1, runs = 0, balls = 1, battingState = BattingState.OUT), scoreCard.strikerScore)
+        assertEquals(BatsmanScore(
+            id = 1,
+            runs = 0,
+            balls = 1,
+            battingState = BattingState.OUT,
+            noOfFours = 0,
+            noOfSixes = 0
+        ), scoreCard.strikerScore)
         assertEquals(
-            BatsmanScore(id = 2, runs = 0, balls = 0, battingState = BattingState.NOT_BATTED),
+            BatsmanScore(
+                id = 2,
+                runs = 0,
+                balls = 0,
+                battingState = BattingState.NOT_BATTED,
+                noOfFours = 0,
+                noOfSixes = 0
+            ),
             scoreCard.nonStrikerScore
         )
     }
@@ -160,8 +174,8 @@ class InningTest {
         inning.setBatsman(2)
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(1, 0, 0, BattingState.NOT_BATTED), scoreCard.nonStrikerScore)
-        assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING), scoreCard.strikerScore)
+        assertEquals(BatsmanScore(1, 0, 0, BattingState.NOT_BATTED, 0, 0), scoreCard.nonStrikerScore)
+        assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING, 0, 0), scoreCard.strikerScore)
     }
 
     @Test
@@ -172,8 +186,8 @@ class InningTest {
         inning.setBatsman(2)
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(0, 1, 1, BattingState.NOT_BATTED), scoreCard.nonStrikerScore)
-        assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING), scoreCard.strikerScore)
+        assertEquals(BatsmanScore(0, 1, 1, BattingState.NOT_BATTED, 0, 0), scoreCard.nonStrikerScore)
+        assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING, 0, 0), scoreCard.strikerScore)
     }
 
     @Test
@@ -225,6 +239,18 @@ class InningTest {
         assertEquals(
             teamScore,
             TeamScore(run = 10, wickets = 0, overNumber = 0, ballNumber = 2, inningState = InningState.Completed)
+        )
+    }
+
+    @Test
+    fun `should add a four and six to batsman's score when 4 and 6 is scored`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), 10)
+        inning.registerBall(NoWicketBall(6))
+        inning.registerBall(NoWicketBall(4))
+        val strikerScore = inning.scoreCard().strikerScore
+        assertEquals(
+            strikerScore,
+            BatsmanScore(id = 0, runs = 10, balls = 2, battingState = BattingState.NOT_BATTED, noOfFours = 1, noOfSixes = 1)
         )
     }
 }

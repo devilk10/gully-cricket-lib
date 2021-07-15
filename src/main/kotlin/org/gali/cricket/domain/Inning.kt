@@ -4,7 +4,7 @@ class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: Li
 
     private val overs = Overs(maxOver)
     private val batsmanScore =
-        battingTeamPlayers.map { BatsmanScore(it, 0, 0, BattingState.NOT_BATTED) }.toMutableList()
+        battingTeamPlayers.map { BatsmanScore(it, 0, 0, BattingState.NOT_BATTED, 0, 0) }.toMutableList()
     private val bowlingScore =
         bowlingTeamPlayers.map { BowlerScore(it, 0, 0, 0) }.toMutableList()
 
@@ -51,13 +51,20 @@ class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: Li
 
     private fun inningsCompleted(): Boolean {
         val isAllOut = overs.totalWicket() == this.batsmanScore.size - 1
-        val isTargetAchieved = target?.let { it <= overs.totalRuns() }?: false
+        val isTargetAchieved = target?.let { it <= overs.totalRuns() } ?: false
         return overs.isCompleted() || isAllOut || isTargetAchieved
     }
 
     private fun updateScoreOnStrikeBatsman(ball: Ball) {
-        val score = batsmanScore[onStrikePlayerIndex]
-        val updatedScore = score.copy(runs = score.runs + ball.playerScoredRun(), balls = score.balls + 1)
+        val score: BatsmanScore = batsmanScore[onStrikePlayerIndex]
+        val incFourBy = if (ball.isFour()) 1 else 0
+        val incSixBy = if (ball.isSix()) 1 else 0
+        val updatedScore = score.copy(
+            runs = score.runs + ball.playerScoredRun(),
+            noOfFours = score.noOfFours + incFourBy,
+            noOfSixes = score.noOfSixes + incSixBy,
+            balls = score.balls + 1
+        )
         batsmanScore[onStrikePlayerIndex] = updatedScore
     }
 

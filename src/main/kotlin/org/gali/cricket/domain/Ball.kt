@@ -7,6 +7,8 @@ sealed class Ball {
     abstract fun playerScoredRun(): Int
     abstract fun isLegal(): Boolean
     abstract fun hasWicket(): Boolean
+    fun isFour(): Boolean = playerScoredRun() == 4
+    fun isSix(): Boolean = playerScoredRun() == 6
 }
 
 data class NoWicketBall(override val run: Int) : Ball() {
