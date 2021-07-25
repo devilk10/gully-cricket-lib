@@ -12,6 +12,11 @@ class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: Li
     private var onNonStrikePlayerIndex = 1
     private var bowlerIndex = 0
 
+    init {
+        batsmanScore[0].battingState = BattingState.BATTING
+        batsmanScore[1].battingState = BattingState.BATTING
+    }
+
     fun registerBall(ball: Ball) {
         updateScoreOnStrikeBatsman(ball)
         updateBowlerScore(ball)

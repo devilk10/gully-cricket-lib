@@ -98,8 +98,8 @@ class InningTest {
         inning.registerBall(ball)
 
         val actualScoreCard = inning.scoreCard()
-        val expectedStrikerScore = BatsmanScore(0, 4, 1, BattingState.NOT_BATTED, 1, 0)
-        val expectedNonStrikerScore = BatsmanScore(1, 0, 0, BattingState.NOT_BATTED, 0, 0)
+        val expectedStrikerScore = BatsmanScore(0, 4, 1, BattingState.BATTING, 1, 0)
+        val expectedNonStrikerScore = BatsmanScore(1, 0, 0, BattingState.BATTING, 0, 0)
 
         assertEquals(expectedStrikerScore, actualScoreCard.strikerScore)
         assertEquals(expectedNonStrikerScore, actualScoreCard.nonStrikerScore)
@@ -114,8 +114,8 @@ class InningTest {
         inning.registerBall(NoWicketBall(2))
 
         val actualScoreCard = inning.scoreCard()
-        val expectedStrikerScore = BatsmanScore(0, 7, 3, BattingState.NOT_BATTED, 0, 0)
-        val expectedNonStrikerScore = BatsmanScore(1, 3, 1, BattingState.NOT_BATTED, 0, 0)
+        val expectedStrikerScore = BatsmanScore(0, 7, 3, BattingState.BATTING, 0, 0)
+        val expectedNonStrikerScore = BatsmanScore(1, 3, 1, BattingState.BATTING, 0, 0)
 
         assertEquals(expectedNonStrikerScore, actualScoreCard.nonStrikerScore)
         assertEquals(expectedStrikerScore, actualScoreCard.strikerScore)
@@ -160,7 +160,7 @@ class InningTest {
                 id = 2,
                 runs = 0,
                 balls = 0,
-                battingState = BattingState.NOT_BATTED,
+                battingState = BattingState.BATTING,
                 noOfFours = 0,
                 noOfSixes = 0
             ),
@@ -176,7 +176,7 @@ class InningTest {
         inning.setBatsman(2)
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(1, 0, 0, BattingState.NOT_BATTED, 0, 0), scoreCard.nonStrikerScore)
+        assertEquals(BatsmanScore(1, 0, 0, BattingState.BATTING, 0, 0), scoreCard.nonStrikerScore)
         assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING, 0, 0), scoreCard.strikerScore)
     }
 
@@ -188,7 +188,7 @@ class InningTest {
         inning.setBatsman(2)
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(0, 1, 1, BattingState.NOT_BATTED, 0, 0), scoreCard.nonStrikerScore)
+        assertEquals(BatsmanScore(0, 1, 1, BattingState.BATTING, 0, 0), scoreCard.nonStrikerScore)
         assertEquals(BatsmanScore(2, 0, 0, BattingState.BATTING, 0, 0), scoreCard.strikerScore)
     }
 
@@ -256,7 +256,7 @@ class InningTest {
                 id = 0,
                 runs = 10,
                 balls = 2,
-                battingState = BattingState.NOT_BATTED,
+                battingState = BattingState.BATTING,
                 noOfFours = 1,
                 noOfSixes = 1
             )
@@ -274,7 +274,7 @@ class InningTest {
                 id = 1,
                 runs = 0,
                 balls = 0,
-                battingState = BattingState.NOT_BATTED,
+                battingState = BattingState.BATTING,
                 noOfFours = 0,
                 noOfSixes = 0
             )
@@ -292,7 +292,7 @@ class InningTest {
                 id = 1,
                 runs = 0,
                 balls = 0,
-                battingState = BattingState.NOT_BATTED,
+                battingState = BattingState.BATTING,
                 noOfFours = 0,
                 noOfSixes = 0
             )
@@ -321,7 +321,7 @@ class InningTest {
                 id = 1,
                 runs = 0,
                 balls = 0,
-                battingState = BattingState.NOT_BATTED,
+                battingState = BattingState.BATTING,
                 noOfFours = 0,
                 noOfSixes = 0
             )
@@ -339,7 +339,7 @@ class InningTest {
                 id = 1,
                 runs = 0,
                 balls = 0,
-                battingState = BattingState.NOT_BATTED,
+                battingState = BattingState.BATTING,
                 noOfFours = 0,
                 noOfSixes = 0
             )
