@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 
 class OversTest {
     @Test
-    fun `should register first ball over`() {
+    fun `should have 1 ball in the over when first ball is bowled`() {
         val overs = Overs(2)
         val ball = NoWicketBall(2)
         overs.addBall(ball)

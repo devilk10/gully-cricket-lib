@@ -19,4 +19,8 @@ class Match(private val teams: Pair<Team, Team>, private val maxOvers: Int) {
                 null
             )
     }
+
+    fun startNewOver(bowler: Player) {
+        currentInning.setBowler(bowler.id)
+    }
 }

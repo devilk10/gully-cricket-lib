@@ -39,4 +39,15 @@ class MatchTest {
         assertEquals(match.scoreCard().teamScore, expectedTeamScore)
     }
 
+    @Test
+    fun `should have Ashish as a bowler when new over is started`(){
+        val player = Player(0, "ketan")
+        val player1 = Player(1, "Ashish")
+        val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 2)
+        repeat(6) {
+            match.registerBall(NoWicketBall(4))
+        }
+        match.startNewOver(player1)
+        assertEquals(match.scoreCard().bowlerScore, BowlerScore(1, 0, 0 , 0))
+    }
 }
