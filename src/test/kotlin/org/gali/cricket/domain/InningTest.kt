@@ -145,14 +145,16 @@ class InningTest {
 
         val scoreCard = inning.scoreCard()
 
-        assertEquals(BatsmanScore(
-            id = 1,
-            runs = 0,
-            balls = 1,
-            battingState = BattingState.OUT,
-            noOfFours = 0,
-            noOfSixes = 0
-        ), scoreCard.strikerScore)
+        assertEquals(
+            BatsmanScore(
+                id = 1,
+                runs = 0,
+                balls = 1,
+                battingState = BattingState.OUT,
+                noOfFours = 0,
+                noOfSixes = 0
+            ), scoreCard.strikerScore
+        )
         assertEquals(
             BatsmanScore(
                 id = 2,
@@ -250,7 +252,108 @@ class InningTest {
         val strikerScore = inning.scoreCard().strikerScore
         assertEquals(
             strikerScore,
-            BatsmanScore(id = 0, runs = 10, balls = 2, battingState = BattingState.NOT_BATTED, noOfFours = 1, noOfSixes = 1)
+            BatsmanScore(
+                id = 0,
+                runs = 10,
+                balls = 2,
+                battingState = BattingState.NOT_BATTED,
+                noOfFours = 1,
+                noOfSixes = 1
+            )
+        )
+    }
+
+    @Test
+    fun `should set Non striker on strike when run is ran on Byes`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), 10)
+        inning.registerBall(ByesBall(1))
+        val strikerScore = inning.scoreCard().strikerScore
+        assertEquals(
+            strikerScore,
+            BatsmanScore(
+                id = 1,
+                runs = 0,
+                balls = 0,
+                battingState = BattingState.NOT_BATTED,
+                noOfFours = 0,
+                noOfSixes = 0
+            )
+        )
+    }
+
+    @Test
+    fun `should set Non striker on strike when run is ran on Byes that is also a no ball`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), 10)
+        inning.registerBall(ByesBall(1, isNoBall = true))
+        val strikerScore = inning.scoreCard().strikerScore
+        assertEquals(
+            strikerScore,
+            BatsmanScore(
+                id = 1,
+                runs = 0,
+                balls = 0,
+                battingState = BattingState.NOT_BATTED,
+                noOfFours = 0,
+                noOfSixes = 0
+            )
+        )
+    }
+
+    @Test
+    fun `should set Non striker out when on Byes that is also a no ball`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), 10)
+        inning.registerBall(ByesBall(1, RunOut(1, 12), isNoBall = true))
+        val strikerScore = inning.scoreCard().strikerScore
+        assertEquals(
+            strikerScore,
+            BatsmanScore(id = 1, runs = 0, balls = 0, battingState = BattingState.OUT, noOfFours = 0, noOfSixes = 0)
+        )
+    }
+
+    @Test
+    fun `should set Non striker on strike when run is ran on LegByes`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), 10)
+        inning.registerBall(LegByesBall(1))
+        val strikerScore = inning.scoreCard().strikerScore
+        assertEquals(
+            strikerScore,
+            BatsmanScore(
+                id = 1,
+                runs = 0,
+                balls = 0,
+                battingState = BattingState.NOT_BATTED,
+                noOfFours = 0,
+                noOfSixes = 0
+            )
+        )
+    }
+
+    @Test
+    fun `should set Non striker on strike when run is ran on LegByes that is also a no ball`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), 10)
+        inning.registerBall(LegByesBall(1, isNoBall = true))
+        val strikerScore = inning.scoreCard().strikerScore
+        assertEquals(
+            strikerScore,
+            BatsmanScore(
+                id = 1,
+                runs = 0,
+                balls = 0,
+                battingState = BattingState.NOT_BATTED,
+                noOfFours = 0,
+                noOfSixes = 0
+            )
+        )
+    }
+
+    @Test
+    fun `should set Non striker out when on LegByes that is also a no ball`() {
+        val inning = Inning(1, listOf(0, 1, 2), listOf(12, 13, 14), 10)
+        inning.registerBall(LegByesBall(1, RunOut(1, 12), isNoBall = true))
+        val strikerScore = inning.scoreCard().strikerScore
+        assertEquals(
+            strikerScore,
+            BatsmanScore(id = 1, runs = 0, balls = 0, battingState = BattingState.OUT, noOfFours = 0, noOfSixes = 0)
         )
     }
 }

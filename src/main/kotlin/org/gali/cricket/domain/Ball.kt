@@ -31,3 +31,19 @@ data class WicketBall(override val run: Int = 0, override val wicket: Wicket) : 
     override fun isLegal(): Boolean = true
     override fun hasWicket(): Boolean = true
 }
+
+data class ByesBall(override val run: Int = 0, override val wicket: Wicket? = null, val isNoBall: Boolean = false) :
+    Ball() {
+    override fun totalRun(): Int = run + if (isNoBall) 1 else 0
+    override fun playerScoredRun(): Int = 0
+    override fun isLegal(): Boolean = isNoBall
+    override fun hasWicket(): Boolean = wicket != null
+}
+
+data class LegByesBall(override val run: Int = 0, override val wicket: Wicket? = null, val isNoBall: Boolean = false) :
+    Ball() {
+    override fun totalRun(): Int = run + if (isNoBall) 1 else 0
+    override fun playerScoredRun(): Int = 0
+    override fun isLegal(): Boolean = isNoBall
+    override fun hasWicket(): Boolean = wicket != null
+}
