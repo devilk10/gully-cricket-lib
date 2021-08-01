@@ -82,6 +82,7 @@ class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: Li
                 batsmanScore[onNonStrikePlayerIndex].battingState = BattingState.OUT
             }
         }
+        //Todo ball.run.run change it with meaningful naming
         if (ball.run.run % 2 != 0) changeStrike()
     }
 

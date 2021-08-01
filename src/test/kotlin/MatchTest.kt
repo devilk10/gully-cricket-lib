@@ -40,7 +40,7 @@ class MatchTest {
     }
 
     @Test
-    fun `should have Ashish as a bowler when new over is started`(){
+    fun `should have Ashish as a bowler when new over is started`() {
         val player = Player(0, "ketan")
         val player1 = Player(1, "Ashish")
         val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 2)
@@ -48,6 +48,27 @@ class MatchTest {
             match.registerBall(NoWicketBall(NormalRuns(4)))
         }
         match.startNewOver(player1)
-        assertEquals(match.scoreCard().bowlerScore, BowlerScore(1, 0, 0 , 0))
+        assertEquals(match.scoreCard().bowlerScore, BowlerScore(1, 0, 0, 0))
+    }
+
+    @Test
+    fun `should have Foo as new batsman when wicket falls`() {
+        val player = Player(0, "ketan")
+        val player1 = Player(1, "Ashish")
+        val player2 = Player(2, "Foo")
+        val match = Match(Pair(Team("", listOf(player, player1, player2)), Team("", listOf(player, player1))), 2)
+        match.registerBall(WicketBall(wicket = Bowled(0)))
+        match.setNewBatsman(player2)
+
+        assertEquals(
+            match.scoreCard().strikerScore, BatsmanScore(
+                2,
+                runs = 0,
+                balls = 0,
+                battingState = BattingState.BATTING,
+                noOfFours = 0,
+                noOfSixes = 0,
+            )
+        )
     }
 }

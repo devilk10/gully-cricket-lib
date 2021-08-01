@@ -23,4 +23,8 @@ class Match(private val teams: Pair<Team, Team>, private val maxOvers: Int) {
     fun startNewOver(bowler: Player) {
         currentInning.setBowler(bowler.id)
     }
+
+    fun setNewBatsman(batsman: Player) {
+        currentInning.setBatsman(batsman.id)
+    }
 }
