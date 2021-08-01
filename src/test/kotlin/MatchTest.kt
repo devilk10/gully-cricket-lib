@@ -9,7 +9,7 @@ class MatchTest {
         val player = Player(0, "ketan")
         val player1 = Player(1, "Ashish")
         val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 6)
-        match.registerBall(NoWicketBall(4))
+        match.registerBall(NoWicketBall(NormalRuns(4)))
         val expectedTeamScore = TeamScore(
             run = 4,
             wickets = 0,
@@ -26,7 +26,7 @@ class MatchTest {
         val player1 = Player(1, "Ashish")
         val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 1)
         repeat(6) {
-            match.registerBall(NoWicketBall(4))
+            match.registerBall(NoWicketBall(NormalRuns(4)))
         }
         match.startSecondInning()
         val expectedTeamScore = TeamScore(
@@ -45,7 +45,7 @@ class MatchTest {
         val player1 = Player(1, "Ashish")
         val match = Match(Pair(Team("", listOf(player, player1)), Team("", listOf(player, player1))), 2)
         repeat(6) {
-            match.registerBall(NoWicketBall(4))
+            match.registerBall(NoWicketBall(NormalRuns(4)))
         }
         match.startNewOver(player1)
         assertEquals(match.scoreCard().bowlerScore, BowlerScore(1, 0, 0 , 0))

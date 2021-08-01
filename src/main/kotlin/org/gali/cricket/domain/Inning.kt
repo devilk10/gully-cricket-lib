@@ -31,7 +31,7 @@ class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: Li
         val bowlerScore = bowlingScore[bowlerIndex]
 
         bowlingScore[bowlerIndex] = bowlerScore.copy(
-            runs = bowlerScore.runs + ball.totalRun(),
+            runs = bowlerScore.runs + ball.runsWithPenalty(),
             legalBalls = bowlerScore.legalBalls + if (ball.isLegal()) 1 else 0,
             wickets = bowlerScore.wickets + if (ball.hasWicket()) 1 else 0
         )
@@ -82,7 +82,7 @@ class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: Li
                 batsmanScore[onNonStrikePlayerIndex].battingState = BattingState.OUT
             }
         }
-        if (ball.run % 2 != 0) changeStrike()
+        if (ball.run.run % 2 != 0) changeStrike()
     }
 
     private fun changeStrike() {
