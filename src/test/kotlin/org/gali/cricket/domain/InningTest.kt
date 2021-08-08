@@ -356,4 +356,17 @@ class InningTest {
             BatsmanScore(id = 1, runs = 0, balls = 0, battingState = BattingState.OUT, noOfFours = 0, noOfSixes = 0)
         )
     }
+
+    @Test
+    fun `should add player Foo in the batting inning`() {
+        val inning = Inning(1, listOf(0, 1), listOf(12, 13, 14), 10)
+        inning.registerBall(WicketBall(wicket = Bowled(0)))
+        inning.addPlayer(2)
+        inning.setBatsman(2)
+        val strikerScore = inning.scoreCard().strikerScore
+        assertEquals(
+            BatsmanScore(id = 2, runs = 0, balls = 0, battingState = BattingState.BATTING, noOfFours = 0, noOfSixes = 0),
+            strikerScore
+        )
+    }
 }

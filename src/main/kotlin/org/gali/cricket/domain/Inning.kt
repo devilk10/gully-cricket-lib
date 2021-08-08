@@ -82,7 +82,7 @@ class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: Li
                 batsmanScore[onNonStrikePlayerIndex].battingState = BattingState.OUT
             }
         }
-        //Todo ball.run.run change it with meaningful naming
+        //Todo ball.run.run change it with meaningful name
         if (ball.run.run % 2 != 0) changeStrike()
     }
 
@@ -105,4 +105,8 @@ class Inning(maxOver: Int, battingTeamPlayers: List<Int>, bowlingTeamPlayers: Li
     }
 
     fun isCompleted(): Boolean = overs.isCompleted()
+
+    fun addPlayer(player: Int) {
+        batsmanScore.add(BatsmanScore(player, 0, 0, BattingState.NOT_BATTED, noOfFours = 0, noOfSixes = 0))
+    }
 }
