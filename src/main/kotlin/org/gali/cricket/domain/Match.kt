@@ -16,7 +16,7 @@ class Match(private val teams: Pair<Team, Team>, private val maxOvers: Int) {
                 maxOvers,
                 teams.second.players.map { it.id },
                 teams.first.players.map { it.id },
-                null
+                currentInning.scoreCard().teamScore.run + 1
             )
     }
 
